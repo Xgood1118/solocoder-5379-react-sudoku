@@ -62,6 +62,12 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (e.key === ' ' && (game.gameState === 'playing' || game.gameState === 'paused')) {
+        e.preventDefault()
+        game.togglePause()
+        return
+      }
+
       if (game.gameState !== 'playing' && game.gameState !== 'failed') return
 
       if (e.key >= '1' && e.key <= '9') {

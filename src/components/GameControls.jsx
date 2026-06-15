@@ -16,42 +16,46 @@ function GameControls({
   onCheck,
   onShare,
 }) {
-  const canPlay = gameState === 'playing' || gameState === 'failed'
+  const canControl = gameState === 'playing' || gameState === 'failed' || gameState === 'paused'
+  const isPaused = gameState === 'paused'
+  const canEdit = gameState === 'playing' || gameState === 'failed'
 
   return (
     <div className="controls">
       <button className="btn btn-primary" onClick={onNewGame}>
         新游戏
       </button>
-      {canPlay && (
+      {canControl && (
         <>
           <button
             className="btn"
             onClick={onUndo}
+            disabled={isPaused}
           >
             撤销
           </button>
           <button
             className="btn btn-warning"
             onClick={onHint}
-            disabled={hintsUsed >= maxHints}
+            disabled={hintsUsed >= maxHints || isPaused}
           >
             提示 ({maxHints - hintsUsed})
           </button>
           <button
             className={`btn btn-pencil ${pencilMode ? 'active' : ''}`}
             onClick={onTogglePencil}
+            disabled={isPaused}
           >
             {pencilMode ? '笔记中' : '笔记'}
           </button>
-          <button className="btn btn-success" onClick={onCheck}>
+          <button className="btn btn-success" onClick={onCheck} disabled={isPaused}>
             检查
           </button>
-          <button className="btn btn-danger" onClick={onSolve}>
+          <button className="btn btn-danger" onClick={onSolve} disabled={isPaused}>
             求解
           </button>
           <button className="btn" onClick={onTogglePause}>
-            {gameState === 'paused' ? '继续' : '暂停'}
+            {isPaused ? '继续' : '暂停'}
           </button>
           <button className="btn" onClick={onShare}>
             分享
